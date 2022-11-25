@@ -1,6 +1,10 @@
 package fr.greta92.banqueappfx.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javafx.beans.property.DoubleProperty;
@@ -9,16 +13,17 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 
 public class Compte implements Serializable, Comparable<Compte> {
 //	etat interne/données locales/variables d'instance
 //	les properties sont observables
 //	private int numeroCompte;
-	private IntegerProperty numeroCompte;
+	transient private IntegerProperty numeroCompte;
 //	private double solde;
-	private DoubleProperty solde;
+	transient private DoubleProperty solde;
 //	private String titulaire;
-	private StringProperty titulaire;
+	transient private StringProperty titulaire;
 	
 	public IntegerProperty numeroCompte() {
 		return numeroCompte;
@@ -155,4 +160,20 @@ public class Compte implements Serializable, Comparable<Compte> {
 		if(this.getNumeroCompte() < o.getNumeroCompte()) return 1;
 		return 0;
 	}	
+	
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(getSolde());
+		oos.writeObject(getTitulaire());
+		oos.writeObject(getNumeroCompte());
+	}
+	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		ois.defaultReadObject();
+		Double solde = (Double)ois.readObject();
+		String titulaire = (String)ois.readObject();
+		Integer numero = (Integer)ois.readObject();
+		this.titulaire = new SimpleStringProperty(titulaire);
+		this.numeroCompte = new SimpleIntegerProperty(numero);
+		this.solde = new SimpleDoubleProperty(solde);
+	}
 }

@@ -1,5 +1,8 @@
 package fr.greta92.banqueappfx.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,44 +13,44 @@ import javafx.collections.ObservableList;
 
 public class Banque implements Serializable {
 	private int numeroCompte;
-	private ArrayList<Compte> comptes;
-//	private ObservableList<Compte> comptes;
-	
-//	/**
-//	 * @return the comptes
-//	 */
-//	public ObservableList<Compte> getComptes() {
-//		return comptes;
-//	}
-//
-//	/**
-//	 * @param comptes the comptes to set
-//	 */
-//	public void setComptes(ObservableList<Compte> comptes) {
-//		this.comptes = comptes;
-//	}
-	
-
-	public Banque() {
-		numeroCompte = 1001;
-		comptes = new ArrayList<>();// initialise l'objet ArrayList
-//		comptes = FXCollections.observableArrayList();// initialise l'objet ArrayList
-	
-	}
+//	private ArrayList<Compte> comptes;
+	transient private ObservableList<Compte> comptes;
 	
 	/**
 	 * @return the comptes
 	 */
-	public ArrayList<Compte> getComptes() {
+	public ObservableList<Compte> getComptes() {
 		return comptes;
 	}
 
 	/**
 	 * @param comptes the comptes to set
 	 */
-	public void setComptes(ArrayList<Compte> comptes) {
+	public void setComptes(ObservableList<Compte> comptes) {
 		this.comptes = comptes;
 	}
+	
+
+	public Banque() {
+		numeroCompte = 1001;
+//		comptes = new ArrayList<>();// initialise l'objet ArrayList
+		comptes = FXCollections.observableArrayList();// initialise l'objet ArrayList
+	
+	}
+	
+//	/**
+//	 * @return the comptes
+//	 */
+//	public ArrayList<Compte> getComptes() {
+//		return comptes;
+//	}
+//
+//	/**
+//	 * @param comptes the comptes to set
+//	 */
+//	public void setComptes(ArrayList<Compte> comptes) {
+//		this.comptes = comptes;
+//	}
 
 	public int ouvrirCompte(String titulaire, double solde) {
 		// on crée le compte
@@ -124,5 +127,13 @@ public class Banque implements Serializable {
 //		});
 //	}
 	
-
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(new ArrayList<Compte>(comptes));
+	}
+	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		ois.defaultReadObject();
+		ArrayList<Compte> comptes = (ArrayList<Compte>)ois.readObject();
+		setComptes(FXCollections.observableArrayList(comptes));
+	}
 }

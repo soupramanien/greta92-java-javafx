@@ -50,8 +50,6 @@ public class MainController {
 	@FXML
 	Button modifierCompteBtn;
 	
-	private Banque banque = new Banque();
-	
 	@FXML
 	public void ajouterCompte(ActionEvent event) throws IOException {
 		//créer un objet URL - chemin vers le fichier XML
@@ -116,7 +114,6 @@ public class MainController {
 //		b.ouvrirCompte("titulaire 3", 3000);
 		
 //		compteListe.getItems().addAll("java", "Python", "C++");
-		compteListe.setItems(FXCollections.observableArrayList(this.banque.getComptes()));
 		//ecouter pour les changments sur la liste des elements selectionnée
 		compteListe.getSelectionModel()
 					.getSelectedItems()
@@ -166,7 +163,8 @@ public class MainController {
 
 	
 	public void setBanque(Banque banque) {
-		this.banque = banque;
+		compteListe.setItems(banque.getComptes());
+		compteListe.refresh();
 	}
 	
 	
