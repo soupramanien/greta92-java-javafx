@@ -20,7 +20,8 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Comptes">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem onAction="#ajouterCompte" mnemonicParsing="false" text="Ajouter Compte" />
+                    <MenuItem onAction="#fermer" mnemonicParsing="false" text="Fermer" />
                   </items>
                 </Menu>
               </menus>

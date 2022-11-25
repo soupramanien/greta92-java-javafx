@@ -1,11 +1,14 @@
 package fr.greta92.banqueappfx;
 
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 
 import fr.greta92.banqueappfx.model.Banque;
 import fr.greta92.banqueappfx.model.Compte;
 import fr.greta92.banqueappfx.model.SoldeInsuffisantException;
+import javafx.application.Platform;
 import javafx.beans.binding.Binding;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -14,6 +17,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -22,6 +27,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MainController {
 //	@FXML
@@ -42,7 +49,24 @@ public class MainController {
 	Button supprimerCompteBtn;
 	@FXML
 	Button modifierCompteBtn;
-	
+	@FXML
+	public void ajouterCompte(ActionEvent event) throws IOException {
+		//créer un objet URL - chemin vers le fichier XML
+		URL resource = getClass().getResource("AjouterCompte.fxml");
+		//objet permet de creer objet java à partir de FXML
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(resource);
+		AnchorPane root = (AnchorPane)loader.load();
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.show();
+	}
+	@FXML
+	public void fermer(ActionEvent event) {
+		Platform.exit();
+	}
 	@FXML
 	public void supprimerCompte(ActionEvent event) {
 		System.out.println(event);
