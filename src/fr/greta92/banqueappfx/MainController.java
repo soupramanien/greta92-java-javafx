@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import fr.greta92.banqueappfx.model.Banque;
 import fr.greta92.banqueappfx.model.Compte;
+import fr.greta92.banqueappfx.model.SoldeInsuffisantException;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,6 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 
@@ -33,6 +38,11 @@ public class MainController {
 	TextField titulaireTF;
 	@FXML
 	TextField soldeTF;
+	@FXML
+	Button supprimerCompteBtn;
+	@FXML
+	Button modifierCompteBtn;
+	
 	@FXML
 	public void supprimerCompte(ActionEvent event) {
 		System.out.println(event);
@@ -57,7 +67,15 @@ public class MainController {
 		Compte compte = 
 				compteListe.getSelectionModel().getSelectedItem();
 		compte.setTitulaire(titulaireTF.getText());
-		compte.setSolde(Double.valueOf(soldeTF.getText()));
+		try {
+			compte.setSolde(Double.valueOf(soldeTF.getText()));
+		}
+		catch (SoldeInsuffisantException e) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setContentText(e.getMessage());
+			alert.show();
+		}
+		
 		compteListe.refresh();
 	}
 	
@@ -79,6 +97,18 @@ public class MainController {
 		//désactiver le champ numeroCompte (en lecture seule)
 		numeroCompteTF.setEditable(false);
 		numeroCompteTF.setDisable(true);
+		
+		//désactiver les boutons si aucun element selectionné
+		BooleanBinding equalToBinding = 
+				Bindings
+					.size(compteListe.getSelectionModel().getSelectedItems())
+					.isEqualTo(0);
+		supprimerCompteBtn
+			.disableProperty()
+			.bind(equalToBinding);
+		modifierCompteBtn
+		.disableProperty()
+		.bind(equalToBinding);
 		
 		leftPane.maxWidthProperty()
 			.bind(splitPane.widthProperty().multiply(0.3));
