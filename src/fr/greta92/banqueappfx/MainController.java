@@ -49,6 +49,9 @@ public class MainController {
 	Button supprimerCompteBtn;
 	@FXML
 	Button modifierCompteBtn;
+	
+	private Banque banque = new Banque();
+	
 	@FXML
 	public void ajouterCompte(ActionEvent event) throws IOException {
 		//créer un objet URL - chemin vers le fichier XML
@@ -107,13 +110,13 @@ public class MainController {
 	@FXML
 	public void initialize() {
 		//initialiser les widgets
-		Banque b = new Banque();
-		b.ouvrirCompte("titulaire 1", 1000);
-		b.ouvrirCompte("titulaire 2", 2000);
-		b.ouvrirCompte("titulaire 3", 3000);
+//		Banque b = new Banque();
+//		b.ouvrirCompte("titulaire 1", 1000);
+//		b.ouvrirCompte("titulaire 2", 2000);
+//		b.ouvrirCompte("titulaire 3", 3000);
 		
 //		compteListe.getItems().addAll("java", "Python", "C++");
-		compteListe.setItems(b.getComptes());
+		compteListe.setItems(FXCollections.observableArrayList(this.banque.getComptes()));
 		//ecouter pour les changments sur la liste des elements selectionnée
 		compteListe.getSelectionModel()
 					.getSelectedItems()
@@ -159,6 +162,11 @@ public class MainController {
 			}
 		}
 		
+	}
+
+	
+	public void setBanque(Banque banque) {
+		this.banque = banque;
 	}
 	
 	

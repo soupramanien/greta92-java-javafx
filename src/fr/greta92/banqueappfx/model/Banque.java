@@ -10,30 +10,45 @@ import javafx.collections.ObservableList;
 
 public class Banque implements Serializable {
 	private int numeroCompte;
-//	private ArrayList<Compte> comptes;
-	private ObservableList<Compte> comptes;
+	private ArrayList<Compte> comptes;
+//	private ObservableList<Compte> comptes;
+	
+//	/**
+//	 * @return the comptes
+//	 */
+//	public ObservableList<Compte> getComptes() {
+//		return comptes;
+//	}
+//
+//	/**
+//	 * @param comptes the comptes to set
+//	 */
+//	public void setComptes(ObservableList<Compte> comptes) {
+//		this.comptes = comptes;
+//	}
+	
+
+	public Banque() {
+		numeroCompte = 1001;
+		comptes = new ArrayList<>();// initialise l'objet ArrayList
+//		comptes = FXCollections.observableArrayList();// initialise l'objet ArrayList
+	
+	}
 	
 	/**
 	 * @return the comptes
 	 */
-	public ObservableList<Compte> getComptes() {
+	public ArrayList<Compte> getComptes() {
 		return comptes;
 	}
 
 	/**
 	 * @param comptes the comptes to set
 	 */
-	public void setComptes(ObservableList<Compte> comptes) {
+	public void setComptes(ArrayList<Compte> comptes) {
 		this.comptes = comptes;
 	}
 
-	public Banque() {
-		numeroCompte = 1001;
-//		comptes = new ArrayList<>();// initialise l'objet ArrayList
-		comptes = FXCollections.observableArrayList();// initialise l'objet ArrayList
-	
-	}
-	
 	public int ouvrirCompte(String titulaire, double solde) {
 		// on crée le compte
 		Compte compte = new Compte(numeroCompte, solde, titulaire);
