@@ -33,23 +33,58 @@ import javafx.stage.Stage;
 public class MainController {
 //	@FXML
 //	ListView<String> compteListe;
+	/**
+	 * JavaFX injecte l'objet de type ListView<Compte> dans la variable 'compteListe'
+	 * l'élément ListView déclaré dans 'Main.java' doit posséder l'identifiant 'compteListe' : fx:id="compteListe"
+	 */
 	@FXML
 	ListView<Compte> compteListe;
+	/**
+	 * JavaFX injecte l'objet de type SplitPane dans la variable 'splitPane'
+	 * l'élément SplitPane déclaré dans 'Main.java' doit posséder l'identifiant 'splitPane' : fx:id="splitPane"
+	 */
 	@FXML
 	SplitPane splitPane;
+	/**
+	 * JavaFX injecte l'objet de type AnchorPane dans la variable 'leftPane'
+	 * l'élément AnchorPane déclaré dans 'Main.java' doit posséder l'identifiant 'leftPane' : fx:id="leftPane"
+	 */
 	@FXML
 	AnchorPane leftPane;
+	/**
+	 * JavaFX injecte l'objet de type TextField dans la variable 'numeroCompteTF'
+	 * l'élément TextField déclaré dans 'Main.java' doit posséder l'identifiant 'numeroCompteTF' : fx:id="numeroCompteTF"
+	 */
 	@FXML
 	TextField numeroCompteTF;
+	/**
+	 * JavaFX injecte l'objet de type TextField dans la variable 'titulaireTF'
+	 * l'élément TextField déclaré dans 'Main.java' doit posséder l'identifiant 'titulaireTF' : fx:id="titulaireTF"
+	 */
 	@FXML
 	TextField titulaireTF;
+	/**
+	 * JavaFX injecte l'objet de type TextField dans la variable 'soldeTF'
+	 * l'élément TextField déclaré dans 'Main.java' doit posséder l'identifiant 'soldeTF' : fx:id="soldeTF"
+	 */
 	@FXML
 	TextField soldeTF;
+	/**
+	 * JavaFX injecte l'objet de type Button dans la variable 'supprimerCompteBtn'
+	 * l'élément Button déclaré dans 'Main.java' doit posséder l'identifiant 'supprimerCompteBtn' : fx:id="supprimerCompteBtn"
+	 */
 	@FXML
 	Button supprimerCompteBtn;
+	/**
+	 * JavaFX injecte l'objet de type Button dans la variable 'modifierCompteBtn'
+	 * l'élément Button déclaré dans 'Main.java' doit posséder l'identifiant 'modifierCompteBtn' : fx:id="modifierCompteBtn"
+	 */
 	@FXML
 	Button modifierCompteBtn;
-	
+	/**
+	 * eventhandler du button 'ajouterCompteBtn'
+	 * l'élément Button déclaré dans 'Main.java' doit posséder l'attribut 'onAction=#ajouterCompte' 
+	 */
 	@FXML
 	public void ajouterCompte(ActionEvent event) throws IOException {
 		//créer un objet URL - chemin vers le fichier XML
@@ -58,6 +93,11 @@ public class MainController {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(resource);
 		AnchorPane root = (AnchorPane)loader.load();
+		
+		//A FAIRE
+		//récupérer le controller associé à 'AjouterCompte.fxml'
+		//passer l'objet banque au controller 
+		
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 		stage.setScene(scene);

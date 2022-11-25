@@ -129,11 +129,30 @@ public class Banque implements Serializable {
 //			return 0;
 //		});
 //	}
-	
+	/**
+	 * on customise la sérialisation
+	 * comme les propriétés JavaFX ne sont pas sérialisable, 
+	 * nous fournissons cette méthode qui permet de sérialiser notre objet.
+	 * cette méthode est appelée par la méthode 'writeObject' lors de la sérialisation de l'objet Banque
+	 * cette implémentation crée une ArrayList en utilisant comptes qui est une ObservableList et 
+	 * l'écrit sur le disque 
+	 * @param oos
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeObject(new ArrayList<Compte>(comptes));
 	}
+
+	/**
+	 * on customise la désérialisation car nous avons utilisé une méthode customisée pour sérialiser notre objet.
+	 * 
+	 * cette méthode est appelée par la méthode 'readObject' lors de la désérialisation de l'objet Banque
+	 * cette implémentation initialise 'comptes' qui est un ObservableList avec ArrayList lu du disque 
+	 * @param ois
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
 		ois.defaultReadObject();
 		ArrayList<Compte> comptes = (ArrayList<Compte>)ois.readObject();
