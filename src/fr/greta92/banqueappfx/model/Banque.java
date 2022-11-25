@@ -14,6 +14,9 @@ import javafx.collections.ObservableList;
 public class Banque implements Serializable {
 	private int numeroCompte;
 //	private ArrayList<Compte> comptes;
+	/**
+	 * on stocke les comptes dans une ObservableList car elle est utilisée par ListView comme Model
+	 */
 	transient private ObservableList<Compte> comptes;
 	
 	/**

@@ -52,14 +52,22 @@ public class Main extends Application {
 	public void stop() throws Exception {
 		super.stop();
 		//Serialiser Banque.ser
-		saveBanque("Banque.ser", banque);
+		try {
+			saveBanque("Banque.ser", banque);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			//objet de type AnchorPane est créé à partir de 'Main.xml' - version 1
 //			AnchorPane root = (AnchorPane)FXMLLoader.<AnchorPane>load(getClass().getResource("Main.fxml"));
 			
+			//version 2 - On doit utiliser cette methode si on doit passer les donner vers le controller
 			//créer un objet URL - chemin vers le fichier XML
 			URL resource = getClass().getResource("Main.fxml");
 			//objet permet de creer objet java à partir de FXML
@@ -67,12 +75,17 @@ public class Main extends Application {
 			loader.setLocation(resource);
 			AnchorPane root = (AnchorPane)loader.load();
 			
+			//renvoie le controller
 			MainController controller = (MainController)loader.getController();
+			//on passe l'objet banque à notre mainController
 			controller.setBanque(banque);
-				
+			//création de scène avec AnchorPane
 			Scene scene = new Scene(root,400,400);
+			//on ajoute à la scène la feuille de style
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			//ajout de la scène à l'estrade
 			primaryStage.setScene(scene);
+			//affiche la fenêtre
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

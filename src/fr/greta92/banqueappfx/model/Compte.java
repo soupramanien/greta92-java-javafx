@@ -19,6 +19,10 @@ public class Compte implements Serializable, Comparable<Compte> {
 //	etat interne/données locales/variables d'instance
 //	les properties sont observables
 //	private int numeroCompte;
+	/**
+	 * sérialisation echoue si l'on tente de sérialiser l'objet compte les properties JavaFX ne sont pas sérialisable
+	 * le mot clé 'transient' - les variables marqué ce mot clé ne sont pas sérialisés ainsi on empeche l'échec de l'application
+	 */
 	transient private IntegerProperty numeroCompte;
 //	private double solde;
 	transient private DoubleProperty solde;
@@ -160,13 +164,32 @@ public class Compte implements Serializable, Comparable<Compte> {
 		if(this.getNumeroCompte() < o.getNumeroCompte()) return 1;
 		return 0;
 	}	
-	
+	/**
+	 * on customise la sérialisation
+	 * comme les propriétés JavaFX ne sont pas sérialisable, 
+	 * nous fournissons cette méthode qui permet de sérialiser notre objet.
+	 * cette méthode est appelée par la méthode 'writeObject' lors de la sérialisation de l'objet Banque
+	 * cette implémentation écrit les valeurs primitives et string sur le disque mais pas les variables d'instance qui sont des propriétés JavaFX.
+	 * @param oos
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeObject(getSolde());
 		oos.writeObject(getTitulaire());
 		oos.writeObject(getNumeroCompte());
 	}
+	/**
+	 * on customise la désérialisation car nous avons utilisé une méthode customisée pour sérialiser notre objet.
+	 * 
+	 * cette méthode est appelée par la méthode 'readObject' lors de la désérialisation de l'objet Banque
+	 * cette implémentation lit les valeurs primitives et string et 
+	 * ces valeurs sont utilisées pour initialiser les propriétés JavaFX.
+	 * 
+	 * @param ois
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
 		ois.defaultReadObject();
 		Double solde = (Double)ois.readObject();
