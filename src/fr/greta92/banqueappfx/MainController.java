@@ -1,5 +1,8 @@
 package fr.greta92.banqueappfx;
 
+
+import java.util.Optional;
+
 import fr.greta92.banqueappfx.model.Banque;
 import fr.greta92.banqueappfx.model.Compte;
 import javafx.collections.FXCollections;
@@ -10,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 
 public class MainController {
@@ -22,17 +27,38 @@ public class MainController {
 	SplitPane splitPane;
 	@FXML
 	AnchorPane leftPane;
-	
+	@FXML
+	TextField numeroCompteTF;
+	@FXML
+	TextField titulaireTF;
+	@FXML
+	TextField soldeTF;
 	@FXML
 	public void supprimerCompte(ActionEvent event) {
 		System.out.println(event);
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("confirmer la suppresion ?");
-		alert.showAndWait();
+		Optional<ButtonType> resultat = alert.showAndWait();
+		//si resultat n'est pas vide
+		if(!resultat.isEmpty()) {
+			//on reupere le type de bouton
+			ButtonType buttonType = resultat.get();
+			if(buttonType == ButtonType.OK) {
+				int selectedIndex = 
+						compteListe.getSelectionModel().getSelectedIndex();
+				compteListe.getItems().remove(selectedIndex);
+				compteListe.refresh();
+			}
+		}
 	}
 	@FXML
 	public void modifierCompte(ActionEvent event) {
 		System.out.println(event);
+		Compte compte = 
+				compteListe.getSelectionModel().getSelectedItem();
+		compte.setTitulaire(titulaireTF.getText());
+		compte.setSolde(Double.valueOf(soldeTF.getText()));
+		compteListe.refresh();
 	}
 	
 	
@@ -50,7 +76,9 @@ public class MainController {
 		compteListe.getSelectionModel()
 					.getSelectedItems()
 					.addListener(new ListSelectionListener());
-		
+		//désactiver le champ numeroCompte (en lecture seule)
+		numeroCompteTF.setEditable(false);
+		numeroCompteTF.setDisable(true);
 		
 		leftPane.maxWidthProperty()
 			.bind(splitPane.widthProperty().multiply(0.3));
@@ -63,7 +91,18 @@ public class MainController {
 		@Override
 		public void onChanged(Change<? extends Compte> change) {
 			System.out.println(change.getList());
-			
+			ObservableList<? extends Compte> list = change.getList();
+			if(list.isEmpty()) {
+				numeroCompteTF.setText("");
+				soldeTF.setText("");
+				titulaireTF.setText("");
+			}
+			else {
+				Compte compte = list.get(0);
+				titulaireTF.setText(compte.getTitulaire());
+				soldeTF.setText(""+compte.getSolde());
+				numeroCompteTF.setText(""+compte.getNumeroCompte());
+			}
 		}
 		
 	}

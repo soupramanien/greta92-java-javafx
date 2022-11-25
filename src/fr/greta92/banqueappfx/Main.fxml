@@ -41,19 +41,19 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Numéro de compte" HBox.hgrow="ALWAYS" />
-                              <TextField HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="numeroCompteTF" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Titulaire" HBox.hgrow="ALWAYS" />
-                              <TextField HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="titulaireTF" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Solde" HBox.hgrow="ALWAYS" />
-                              <TextField HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="soldeTF" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
